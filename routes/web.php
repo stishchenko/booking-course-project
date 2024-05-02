@@ -20,7 +20,7 @@ Route::get('/', [BookingController::class, 'index']);
 Route::name('pages.')->group(function () {
     Route::get('/services', [BookingController::class, 'services'])->name('services');
     Route::get('/employees', [BookingController::class, 'employees'])->name('employees');
-    Route::get('/schedule', [BookingController::class, 'schedule'])->name('schedule');
+    Route::get('/schedule', [BookingController::class, 'schedule'])->name('schedules');
     Route::get('/confirmation', [BookingController::class, 'confirmation'])->name('confirmation');
 });
 

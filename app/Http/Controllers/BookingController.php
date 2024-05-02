@@ -23,7 +23,19 @@ class BookingController extends Controller
 
     public function schedule()
     {
-        return view('pages.schedule');
+        $timeSlots1 = [
+            'thursday' => [
+                'date' => '2024-05-02',
+                'slots' => [
+                    ['start_time' => '08:00'],
+                    ['start_time' => '09:00'],
+                    ['start_time' => '10:00'],
+                    ['start_time' => '11:00'],
+                ]
+            ],
+
+        ];
+        return view('pages.schedules')->with('slots', $timeSlots1);
     }
 
     public function confirmation()
