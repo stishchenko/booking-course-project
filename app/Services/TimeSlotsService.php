@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Dtos\HolidaysDto;
 use App\Models\Employee;
 use DateInterval;
 use DateTime;
@@ -11,40 +12,49 @@ class TimeSlotsService
 
     private Employee $employee;
 
-    /*public function __construct(Employee $employee)
+    public function __construct(Employee $employee)
     {
         $this->employee = $employee;
-    }*/
+    }
+
 
     public function calculateTimeSlots(int $duration): array
     {
-        //$employee = $this->employee;
-        //$schedules = $worker->getActiveSchedule();
+        $employee = $this->employee;
+        $holidays = HolidaysDto::transformData($employee->schedule->holidays);
         $currentDate = new DateTime();
         //$currentDay = strtolower(now()->englishDayOfWeek);
         //$skipTillToday = true;
 
         $dates = [];
+        $dateNames = [];
         $timeSlots = [];
+        $counter = 0;
 
-        for ($i = 0; $i < 7; $i ++) {
-            $dayName = strtolower($currentDate->format('l'));
-            $dates[$i] = $currentDate->format('Y-m-d');
+        while ($counter < 7) {
+
+            if (in_array($currentDate->format('Y-m-d'), $holidays)) {
+                $currentDate->add(new DateInterval('P1D'));
+                continue;
+            }
+            $dateName = strtolower($currentDate->format('l'));
+            $date = $currentDate->format('Y-m-d');
             $currentDate->add(new DateInterval('P1D'));
-            $timeSlots[$dayName] = [
-                'date' => $dates[$i],
+            $timeSlots[$date] = [
+                'date_name' => $dateName,
                 'slots' => [],
             ];
+            $counter ++;
         }
 
-        foreach ($timeSlots as $dayOfWeek => $slotInfo) {
+        foreach ($timeSlots as $slotDate => $slotInfo) {
             $slotsOfDay = $this->buildTimeSlots(
                 $duration,
                 DateTime::createFromFormat('H', '9'),
                 DateTime::createFromFormat('H', '18')
             );
 
-            $timeSlots[$dayOfWeek]['slots'] = $slotsOfDay;
+            $timeSlots[$slotDate]['slots'] = $slotsOfDay;
         }
 
         return $timeSlots;
