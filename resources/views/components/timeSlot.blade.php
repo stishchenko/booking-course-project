@@ -1,21 +1,20 @@
 <div class="col">
-    <div class="card mb-4 rounded-3 shadow-sm">
+    <div class="card mb-4 rounded-3 shadow-sm" style="width: 15rem;">
         <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">{{ strtoupper($name) }} ({{ $date }})</h4>
+            <h4 class="my-0 fw-normal">{{ strtoupper($name) }} <br>({{ $date }})</h4>
         </div>
         <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
+            <ul class="list-group list-group-flush">
                 @foreach($slots as $slot)
-                    <li>
+                    <li class="list-group-item">
                         {{ $slot['start_time'] }}
 
-                        {{--<a href="{{ route('set-entity', ['entity' => 'time-slot', 'data' => $date . ' ' . $slot['start_time'] ]) }}"
-                           class="btn btn-primary btn-sm">
+                        <a href="{{ route('save-step', ['entity' => 'time-slot', 'data' => $date . ' ' . $slot['start_time'] ]) }}"
+                           class="btn btn-primary btn-sm ms-5">
                             Select
-                        </a>--}}
+                        </a>
 
                     </li>
-                    <hr>
                 @endforeach
             </ul>
         </div>

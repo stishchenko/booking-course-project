@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TimeSlotsService;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -23,18 +24,8 @@ class BookingController extends Controller
 
     public function schedule()
     {
-        $timeSlots1 = [
-            'thursday' => [
-                'date' => '2024-05-02',
-                'slots' => [
-                    ['start_time' => '08:00'],
-                    ['start_time' => '09:00'],
-                    ['start_time' => '10:00'],
-                    ['start_time' => '11:00'],
-                ]
-            ],
-
-        ];
+        $timeSlotsService = new TimeSlotsService();
+        $timeSlots1 = $timeSlotsService->calculateTimeSlots(60);
         return view('pages.schedules')->with('slots', $timeSlots1);
     }
 
