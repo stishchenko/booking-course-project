@@ -10,6 +10,11 @@ class Holiday extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'start_date',
+        'end_date',
+    ];
+
     public function schedule(): BelongsTo
     {
         return $this->belongsTo(Schedule::class);

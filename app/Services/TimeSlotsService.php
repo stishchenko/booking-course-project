@@ -23,11 +23,7 @@ class TimeSlotsService
         $employee = $this->employee;
         $holidays = HolidaysDto::transformData($employee->schedule->holidays);
         $currentDate = new DateTime();
-        //$currentDay = strtolower(now()->englishDayOfWeek);
-        //$skipTillToday = true;
 
-        $dates = [];
-        $dateNames = [];
         $timeSlots = [];
         $counter = 0;
 
