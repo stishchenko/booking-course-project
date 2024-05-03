@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Service;
 use App\Services\TimeSlotsService;
 use Illuminate\Http\Request;
 
@@ -15,12 +16,12 @@ class BookingController extends Controller
 
     public function services()
     {
-        return view('pages.services');
+        return view('pages.services', ['services' => Service::all()]);
     }
 
     public function employees()
     {
-        return view('pages.employees');
+        return view('pages.employees', ['employees' => Employee::all()]);
     }
 
     public function schedule()
