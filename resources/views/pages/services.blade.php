@@ -1,4 +1,4 @@
-@extends('app')
+@extends('mainApp')
 
 @section('content')
     @foreach($services as $service)
