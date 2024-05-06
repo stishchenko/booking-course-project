@@ -13,7 +13,7 @@ class BookingController extends Controller
     public function index()
     {
         OrderSteps::getInstance()->renew();
-        return view('app');
+        return view('mainApp');
     }
 
     public function services()
