@@ -31,10 +31,24 @@
     <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/favicon.ico">
     <meta name="theme-color" content="#712cf9">
 
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        a.login-btn.btn-primary:hover {
+            background-color: white;
+            color: blue;
+        }
+    </style>
+
 </head>
 <body data-new-gr-c-s-check-loaded="14.1167.0" data-gr-ext-installed="">
 
 <div class="container py-3">
+
     @include('components.header')
 
     <main>

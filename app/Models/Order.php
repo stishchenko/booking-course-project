@@ -12,6 +12,16 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'company_id',
+        'employee_id',
+        'service_id',
+        'user_id',
+        'price',
+        'client_name',
+        'client_phone'
+    ];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
@@ -30,5 +40,10 @@ class Order extends Model
     public function service(): HasOne
     {
         return $this->hasOne(Service::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

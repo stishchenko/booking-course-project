@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderSteps;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ReservationController extends Controller
@@ -40,6 +41,7 @@ class ReservationController extends Controller
             'company_id' => $stepHandler->getCompany()->id,
             'service_id' => $stepHandler->getService()->id,
             'employee_id' => $stepHandler->getEmployee()->id,
+            'user_id' => Auth::check() ? Auth::id() : null,
             'date' => $stepHandler->getDate(),
             'start_time' => $stepHandler->getTime(),
             'price' => $stepHandler->getPrice(),
