@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\OrderSteps;
 use App\Models\Service;
 use App\Services\TimeSlotsService;
 use Illuminate\Http\Request;
@@ -11,24 +12,28 @@ class BookingController extends Controller
 {
     public function index()
     {
+        OrderSteps::getInstance()->renew();
         return view('app');
     }
 
     public function services()
     {
-        return view('pages.services', ['services' => Service::all()]);
+        $hasEmployee = OrderSteps::getInstance()->getEmployee();
+        return view('pages.services', ['services' => $hasEmployee != null ? $hasEmployee->services()->get() :
+            Service::all()]);
     }
 
     public function employees()
     {
-        return view('pages.employees', ['employees' => Employee::all()]);
+        $hasService = OrderSteps::getInstance()->getService();
+        return view('pages.employees', ['employees' => $hasService != null ? $hasService->employees()->get() :
+            Employee::all()]);
     }
 
     public function schedule()
     {
-        $employee = Employee::find(1);
-        $timeSlotsService = new TimeSlotsService($employee);
-        $timeSlots1 = $timeSlotsService->calculateTimeSlots(60);
+        $timeSlotsService = new TimeSlotsService(OrderSteps::getInstance()->getEmployee());
+        $timeSlots1 = $timeSlotsService->calculateTimeSlots(OrderSteps::getInstance()->getService()->duration);
         return view('pages.schedules')->with('slots', $timeSlots1);
     }
 

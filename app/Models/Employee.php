@@ -20,7 +20,7 @@ class Employee extends Model
 
     public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Service::class, 'employee_service');
     }
 
     public function schedule(): HasOne

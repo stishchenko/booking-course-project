@@ -12,7 +12,7 @@ class ReservationController extends Controller
     public function saveProgress(Request $request)
     {
         $data = $request->validate([
-            'entity' => ['required', 'string', Rule::in(['service', 'worker', 'time-slot'])],
+            'entity' => ['required', 'string', Rule::in(['service', 'employee', 'time-slot'])],
             'data' => 'required',
         ]);
         $stepHandler = OrderSteps::getInstance();
@@ -21,7 +21,7 @@ class ReservationController extends Controller
         $nextStep = $stepHandler->getNextStep();
 
         if ($nextStep === OrderSteps::CONFIRMATION) {
-            dd($stepHandler->getService(), $stepHandler->getEmployee(), $stepHandler->getDate(), $stepHandler->getTime(), $stepHandler->getPrice());
+            //dd($stepHandler->getService()->id, $stepHandler->getEmployee()->id, $stepHandler->getDate(), $stepHandler->getTime(), $stepHandler->getPrice());
             $this->createOrder($stepHandler);
             $stepHandler->renew();
         }
@@ -37,15 +37,15 @@ class ReservationController extends Controller
     private function createOrder(OrderSteps $stepHandler): void
     {
         $orderData = [
-            'companyId' => $stepHandler->getCompany()->id,
-            'serviceId' => $stepHandler->getService()->id,
-            'workerId' => $stepHandler->getEmployee()->id,
+            'company_id' => $stepHandler->getCompany()->id,
+            'service_id' => $stepHandler->getService()->id,
+            'employee_id' => $stepHandler->getEmployee()->id,
             'date' => $stepHandler->getDate(),
-            'time' => $stepHandler->getTime(),
+            'start_time' => $stepHandler->getTime(),
             'price' => $stepHandler->getPrice(),
             'duration' => $stepHandler->getService()->duration,
         ];
-
+        dd($orderData);
         $order = Order::create($orderData);
 
     }

@@ -27,8 +27,8 @@ class Order extends Model
         return $this->hasOne(Slot::class);
     }
 
-    public function services(): BelongsToMany
+    public function service(): HasOne
     {
-        return $this->belongsToMany(Service::class, 'order_service');
+        return $this->hasOne(Service::class);
     }
 }

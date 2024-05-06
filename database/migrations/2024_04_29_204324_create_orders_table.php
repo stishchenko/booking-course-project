@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('service_id');
             $table->unsignedBigInteger('employee_id');
             $table->float('price');
             $table->string('client_name');
@@ -21,6 +22,7 @@ return new class extends Migration {
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('service_id')->references('id')->on('services');
         });
     }
 
