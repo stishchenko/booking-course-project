@@ -41,6 +41,13 @@ class BookingController extends Controller
 
     public function confirmation()
     {
-        return view('pages.confirmation');
+        $orderSteps = OrderSteps::getInstance();
+        return view('pages.confirmation',
+            [
+                'service' => $orderSteps->getService(),
+                'employee' => $orderSteps->getEmployee(),
+                'date' => $orderSteps->getDate() . ' ' . $orderSteps->getTime(),
+                'user' => Auth::check() ? Auth::user() : null
+            ]);
     }
 }

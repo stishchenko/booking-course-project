@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('duration');
             $table->timestamps();
 
-            $table->foreign('schedule_id')->references('id')->on('schedules');
+            $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }

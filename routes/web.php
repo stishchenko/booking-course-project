@@ -26,6 +26,7 @@ Route::name('pages.')->group(function () {
 });
 
 Route::get('/save-step', [ReservationController::class, 'saveProgress'])->name('save-step');
+Route::post('/save-order', [ReservationController::class, 'saveOrder'])->name('save-order');
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -41,4 +42,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -149,6 +149,7 @@ class OrderSteps
         return $this;
     }
 
+
     public function getPrice(): int
     {
         $basePrice = $this->getService()->price;
