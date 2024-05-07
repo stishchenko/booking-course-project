@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Dtos\HolidaysDto;
+use App\Dtos\SlotsDto;
 use App\Models\Employee;
 use DateInterval;
 use DateTime;
@@ -47,7 +48,8 @@ class TimeSlotsService
             $slotsOfDay = $this->buildTimeSlots(
                 $duration,
                 DateTime::createFromFormat('H', '9'),
-                DateTime::createFromFormat('H', '18')
+                DateTime::createFromFormat('H', '18'),
+                $slotDate
             );
 
             $timeSlots[$slotDate]['slots'] = $slotsOfDay;
@@ -56,11 +58,13 @@ class TimeSlotsService
         return $timeSlots;
     }
 
-    protected function buildTimeSlots(int $interval, DateTime $start, DateTime $end): array
+    protected function buildTimeSlots(int $interval, DateTime $start, DateTime $end, string $date): array
     {
         $startTime = $start->format('H:i');
         $endTime = $end->format('H:i');
         $timeSlots = [];
+
+        $filledSlots = SlotsDto::transformData($this->employee->schedule->slots()->where('date', $date)->get());
 
         while (strtotime($startTime) <= strtotime($endTime)) {
             $start = $startTime;
@@ -69,9 +73,15 @@ class TimeSlotsService
             $startTime = date('H:i', $followingTime);
 
             if (strtotime($startTime) <= strtotime($endTime)) {
-
+                foreach ($filledSlots as $filledSlot) {
+                    if (new DateTime($start) < $filledSlot['end_time'] &&
+                        new DateTime($end) > $filledSlot['start_time']) {
+                        continue 2;
+                    }
+                }
                 $timeSlots[] = [
-                    'start_time' => $start
+                    'start_time' => $start,
+                    'end_time' => $end,
                 ];
             }
         }

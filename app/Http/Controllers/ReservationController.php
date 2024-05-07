@@ -17,9 +17,9 @@ class ReservationController extends Controller
             'entity' => ['required', 'string', Rule::in(['service', 'employee', 'time-slot'])],
             'data' => 'required',
         ]);
+
         $stepHandler = OrderSteps::getInstance();
         $stepHandler->setStep($data['entity'], $data['data']);
-
         $nextStep = $stepHandler->getNextStep();
 
         /*if ($nextStep === OrderSteps::CONFIRMATION) {
@@ -37,7 +37,7 @@ class ReservationController extends Controller
         $this->createOrder($stepHandler, ['client_name' => $request->name, 'client_phone' => $request->phone]);
         $stepHandler->renew();
 
-        return redirect()->route('pages.services');
+        return redirect()->route('pages.finished-order');
     }
 
     private function getRouteForStep(?string $nextStep): string
@@ -66,6 +66,7 @@ class ReservationController extends Controller
         $order->slot()->create([
             'date' => $stepHandler->getDate(),
             'start_time' => $stepHandler->getTime(),
+            'end_time' => $stepHandler->getEndTime(),
             'duration' => $stepHandler->getService()->duration,
             'schedule_id' => $stepHandler->getEmployee()->schedule->id,
         ]);

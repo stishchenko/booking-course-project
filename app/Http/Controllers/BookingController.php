@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Order;
 use App\Models\OrderSteps;
 use App\Models\Service;
 use App\Services\TimeSlotsService;
@@ -13,6 +14,8 @@ class BookingController extends Controller
 {
     public function index()
     {
+        /*$employee = Employee::find(1);
+        dd($employee->schedule->slots()->where('start_time', '10:00')->get());*/
         OrderSteps::getInstance()->renew();
 
         return view('mainApp', ['user' => Auth::check() ? Auth::user() : null]);
@@ -49,5 +52,11 @@ class BookingController extends Controller
                 'date' => $orderSteps->getDate() . ' ' . $orderSteps->getTime(),
                 'user' => Auth::check() ? Auth::user() : null
             ]);
+    }
+
+    public function finishedOrder()
+    {
+        OrderSteps::getInstance()->renew();
+        return view('pages.finishedOrder', ['user' => Auth::check() ? Auth::user() : null]);
     }
 }

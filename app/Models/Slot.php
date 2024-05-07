@@ -13,6 +13,7 @@ class Slot extends Model
     protected $fillable = [
         'date',
         'start_time',
+        'end_time',
         'duration',
         'schedule_id',
         'order_id'

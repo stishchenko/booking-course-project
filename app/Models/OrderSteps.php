@@ -23,7 +23,8 @@ class OrderSteps
     protected ?Employee $employee = null;
     protected ?Company $company = null;
     protected ?string $date = null;
-    protected ?string $time = null;
+    protected ?string $startTime = null;
+    protected ?string $endTime = null;
 
     public function __construct()
     {
@@ -68,7 +69,7 @@ class OrderSteps
         $isServiceSet = $this->service !== null;
         $isEmployeeSet = $this->employee !== null;
         $isCompanySet = $this->company !== null;
-        $isScheduleSet = $this->date !== null && $this->time !== null;
+        $isScheduleSet = $this->date !== null && $this->startTime !== null;
 
         if ($isCompanySet && $isServiceSet && $isEmployeeSet && $isScheduleSet) {
             return self::CONFIRMATION;
@@ -99,13 +100,15 @@ class OrderSteps
                 $this->setCompany($data);
                 break;
             case 'time-slot':
-                $dateTime = \DateTime::createFromFormat('Y-m-d H:i', $data);
+                $dateTime = \DateTime::createFromFormat('Y-m-d H:i', $data['date'] . ' ' . $data['start_time']);
+                $endTime = \DateTime::createFromFormat('Y-m-d H:i', $data['date'] . ' ' . $data['end_time']);
                 if (!$dateTime) {
                     throw new InvalidArgumentException('Wrong date time for service');
                 }
                 $this
                     ->setDate($dateTime)
-                    ->setTime($dateTime);
+                    ->setTime($dateTime)
+                    ->setEndTime($endTime);
 
                 break;
         }
@@ -132,19 +135,31 @@ class OrderSteps
 
     public function getTime(): string
     {
-        return $this->time;
+        return $this->startTime;
+    }
+
+    public function getEndTime(): string
+    {
+        return $this->endTime;
     }
 
     private function setDate(\DateTime $dateTime): self
     {
-        $this->date = $dateTime->format('d-m-y');
+        $this->date = $dateTime->format('Y-m-d');
 
         return $this;
     }
 
     private function setTime(\DateTime|bool $dateTime): self
     {
-        $this->time = $dateTime->format('H:i');
+        $this->startTime = $dateTime->format('H:i');
+
+        return $this;
+    }
+
+    private function setEndTime(\DateTime|bool $dateTime): self
+    {
+        $this->endTime = $dateTime->format('H:i');
 
         return $this;
     }

@@ -9,7 +9,7 @@
                     <li class="list-group-item">
                         {{ $slot['start_time'] }}
 
-                        <a href="{{ route('save-step', ['entity' => 'time-slot', 'data' => $date . ' ' . $slot['start_time'] ]) }}"
+                        <a href="{{ route('save-step', ['entity' => 'time-slot', 'data' => ['date' => $date,'start_time' => $slot['start_time'],'end_time' => $slot['end_time']] ]) }}"
                            class="btn btn-primary btn-sm ms-5">
                             Select
                         </a>
