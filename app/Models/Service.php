@@ -11,6 +11,13 @@ class Service extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'duration',
+        'price',
+    ];
+
     public function companies(): BelongsToMany
     {
         return $this->belongsToMany(Employee::class);

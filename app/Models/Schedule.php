@@ -11,6 +11,10 @@ class Schedule extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'employee_id',
+    ];
+
     public function weekends(): HasMany
     {
         return $this->hasMany(Weekend::class);
