@@ -12,6 +12,7 @@ class OrderService
             return [];
         }
         $orderArray = [];
+
         foreach ($orders as $order) {
             $orderDto = new OrderDto();
             $orderDto->id = $order->id;
@@ -25,6 +26,6 @@ class OrderService
             $orderDto->clientPhone = $order->client_phone;
             $orderArray[] = $orderDto;
         }
-        return $orderArray;
+        return $groupBy === 'none' ? ['none' => $orderArray] : collect($orderArray)->groupBy($groupBy)->toArray();
     }
 }

@@ -9,10 +9,10 @@
         {{ $order->service }}
     </div>
     <div class="col">
-        {{ $order->price }} UAN.
+        {{ $order->price }}
     </div>
     <div class="col">
-        {{ $order->duration }} min.
+        {{ $order->duration }}
     </div>
     <div class="col-3">
         {{ $order->date }}

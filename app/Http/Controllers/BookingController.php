@@ -71,6 +71,6 @@ class BookingController extends Controller
         }
         $groupType = $request->input('order', 'none');
         $orders = OrderService::transformData(Order::with('service', 'employee', 'slot')->get(), $groupType);
-        return view('pages.orders', ['orders' => $orders, 'orderType' => $groupType, 'user' => Auth::user()]);
+        return view('pages.orders', ['ordersArray' => $orders, 'orderType' => $groupType, 'user' => Auth::user()]);
     }
 }
