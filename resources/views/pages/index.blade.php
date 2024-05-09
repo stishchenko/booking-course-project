@@ -1,5 +1,7 @@
-@extends('layouts.main')
+@extends('mainApp')
 
+@section('headerTitle', 'Booking service')
+@section('headerDescription', 'Please choose a service to book.')
 
 {{--
 @php($chosenEntities = \App\Models\OrderSteps::getInstance())

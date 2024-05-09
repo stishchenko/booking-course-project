@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Dtos\OrderDto;
+use App\Dtos\SlotsDto;
 use App\Models\Employee;
 use App\Models\Order;
 use App\Models\OrderSteps;
 use App\Models\Service;
+use App\Services\OrderService;
 use App\Services\TimeSlotsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BookingController extends Controller
 {
@@ -18,7 +22,7 @@ class BookingController extends Controller
         dd($employee->schedule->slots()->where('start_time', '10:00')->get());*/
         OrderSteps::getInstance()->renew();
 
-        return view('mainApp', ['user' => Auth::check() ? Auth::user() : null]);
+        return view('pages.index', ['user' => Auth::check() ? Auth::user() : null]);
     }
 
     public function services()
@@ -58,5 +62,15 @@ class BookingController extends Controller
     {
         OrderSteps::getInstance()->renew();
         return view('pages.finishedOrder', ['user' => Auth::check() ? Auth::user() : null]);
+    }
+
+    public function orders(Request $request)
+    {
+        if (Gate::denies('view-orders')) {
+            abort(403, 'You are not allowed to view orders');
+        }
+        $groupType = $request->input('order', 'none');
+        $orders = OrderService::transformData(Order::with('service', 'employee', 'slot')->get(), $groupType);
+        return view('pages.orders', ['orders' => $orders, 'orderType' => $groupType, 'user' => Auth::user()]);
     }
 }
