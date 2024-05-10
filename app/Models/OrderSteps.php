@@ -128,7 +128,7 @@ class OrderSteps
         Session::put('order_steps', $this);
     }
 
-    public function getDate(): string
+    public function getDate(): ?string
     {
         return $this->date;
     }

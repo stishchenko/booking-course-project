@@ -37,10 +37,99 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <!-- Progress Bar-->
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <!-- Bootstrap 4 CSS -->
+    <link rel='stylesheet'
+          href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.css'>
+    <!-- Telephone Input CSS -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/css/intlTelInput.css'>
+    <!-- Icons CSS -->
+    <link rel='stylesheet' href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'>
+    <!-- Nice Select CSS -->
+    <link rel='stylesheet'
+          href='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css'>
+
+    <!-- jQuery -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <!-- Bootstrap JS -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js'></script>
+    <!-- jQuery Easing JS -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js'></script>
+    <!-- Telephone Input JS -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/js/intlTelInput.js'></script>
+    <!-- Popper JS -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'></script>
+    <!-- jQuery Nice Select JS -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js'></script>
+
+    <!-- End of Progress Bar-->
     <style>
+        @import url("https://fonts.googleapis.com/css?family=Roboto:300i,400,400i,500,700,900");
+
         a.login-btn.btn-primary:hover {
             background-color: white;
             color: blue;
+        }
+
+        #progressbar {
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        #progressbar li {
+            list-style-type: none;
+            color: #99a2a8;
+            font-size: 9px;
+            width: calc(100% / 4);
+            float: left;
+            position: relative;
+            font: 500 13px/1 "Roboto", sans-serif;
+        }
+
+        #progressbar li:nth-child(2):before {
+            content: "";
+        }
+
+        #progressbar li:nth-child(3):before {
+            content: "";
+        }
+
+        #progressbar li:before {
+            content: "";
+            font: normal normal normal 30px/50px Ionicons;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            display: block;
+            background: #eaf0f4;
+            border-radius: 50%;
+            margin: 0 auto 10px auto;
+        }
+
+        #progressbar li:after {
+            content: '';
+            width: 100%;
+            height: 10px;
+            background: #eaf0f4;
+            position: absolute;
+            left: -50%;
+            top: 21px;
+            z-index: -1;
+        }
+
+        #progressbar li:last-child:after {
+            width: 150%;
+        }
+
+        #progressbar li.active {
+            color: #5cb85c;
+        }
+
+        #progressbar li.active:before, #progressbar li.active:after {
+            background: #5cb85c;
+            color: white;
         }
     </style>
 

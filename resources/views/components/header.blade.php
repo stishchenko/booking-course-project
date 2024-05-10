@@ -71,5 +71,5 @@
         <p class="fs-5 text-body-secondary">@yield('headerDescription')</p>
     </div>
 
-    {{--@yield('breadcrumds')--}}
+    @yield('progressBar')
 </header>

@@ -22,28 +22,29 @@ class BookingController extends Controller
         dd($employee->schedule->slots()->where('start_time', '10:00')->get());*/
         OrderSteps::getInstance()->renew();
 
-        return view('pages.index', ['user' => Auth::check() ? Auth::user() : null]);
+        return view('pages.index', ['user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => false]);
     }
 
     public function services()
     {
         $hasEmployee = OrderSteps::getInstance()->getEmployee();
         return view('pages.services', ['services' => $hasEmployee != null ? $hasEmployee->services()->get() :
-            Service::all(), 'user' => Auth::check() ? Auth::user() : null]);
+            Service::all(), 'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
     }
 
     public function employees()
     {
         $hasService = OrderSteps::getInstance()->getService();
         return view('pages.employees', ['employees' => $hasService != null ? $hasService->employees()->get() :
-            Employee::all(), 'user' => Auth::check() ? Auth::user() : null]);
+            Employee::all(), 'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
     }
 
     public function schedule()
     {
         $timeSlotsService = new TimeSlotsService(OrderSteps::getInstance()->getEmployee());
         $timeSlots1 = $timeSlotsService->calculateTimeSlots(OrderSteps::getInstance()->getService()->duration);
-        return view('pages.schedules', ['slots' => $timeSlots1, 'user' => Auth::check() ? Auth::user() : null]);
+        return view('pages.schedules', ['slots' => $timeSlots1, 'user' => Auth::check() ? Auth::user() :
+            null, 'useProgressBar' => true]);
     }
 
     public function confirmation()
@@ -54,14 +55,17 @@ class BookingController extends Controller
                 'service' => $orderSteps->getService(),
                 'employee' => $orderSteps->getEmployee(),
                 'date' => $orderSteps->getDate() . ' ' . $orderSteps->getTime(),
-                'user' => Auth::check() ? Auth::user() : null
+                'user' => Auth::check() ? Auth::user() : null,
+                'useProgressBar' => true,
+                'confirm' => false
             ]);
     }
 
     public function finishedOrder()
     {
-        OrderSteps::getInstance()->renew();
-        return view('pages.finishedOrder', ['user' => Auth::check() ? Auth::user() : null]);
+        //OrderSteps::getInstance()->renew();
+        return view('pages.finishedOrder', ['user' => Auth::check() ? Auth::user() : null,
+            'useProgressBar' => true, 'confirm' => true]);
     }
 
     public function orders(Request $request)
@@ -71,6 +75,6 @@ class BookingController extends Controller
         }
         $groupType = $request->input('order', 'none');
         $orders = OrderService::transformData(Order::with('service', 'employee', 'slot')->get(), $groupType);
-        return view('pages.orders', ['ordersArray' => $orders, 'orderType' => $groupType, 'user' => Auth::user()]);
+        return view('pages.orders', ['ordersArray' => $orders, 'orderType' => $groupType, 'user' => Auth::user(), 'useProgressBar' => false]);
     }
 }
