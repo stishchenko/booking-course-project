@@ -37,9 +37,9 @@ class Order extends Model
         return $this->hasOne(Slot::class);
     }
 
-    public function service(): HasOne
+    public function service(): BelongsTo
     {
-        return $this->hasOne(Service::class);
+        return $this->belongsTo(Service::class);
     }
 
     public function user(): BelongsTo

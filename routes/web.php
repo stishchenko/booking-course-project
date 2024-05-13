@@ -24,6 +24,7 @@ Route::name('pages.')->group(function () {
     Route::get('/schedule', [BookingController::class, 'schedule'])->name('schedules');
     Route::get('/confirmation', [BookingController::class, 'confirmation'])->name('confirmation');
     Route::get('/finished-order', [BookingController::class, 'finishedOrder'])->name('finished-order');
+    Route::get('/orders', [BookingController::class, 'orders'])->name('orders');
 });
 
 Route::get('/save-step', [ReservationController::class, 'saveProgress'])->name('save-step');

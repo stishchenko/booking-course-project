@@ -16,6 +16,10 @@
             <a class="me-3 py-2 link-body-emphasis text-decoration-none"
                href="{{ route('pages.employees') }}">Masters</a>
             @if(isset($user))
+                @if($user->isAdmin() || $user->isManager())
+                    <a class="me-3 py-2 link-body-emphasis text-decoration-none"
+                       href="{{ route('pages.orders') }}">Orders</a>
+                @endif
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
