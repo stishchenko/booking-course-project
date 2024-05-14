@@ -13,7 +13,7 @@ class ServicePolicy
      */
     public function viewAny(User $user)
     {
-        //
+       return true;
     }
 
     /**
