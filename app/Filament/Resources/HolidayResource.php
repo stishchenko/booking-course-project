@@ -8,6 +8,8 @@ use App\Models\Employee;
 use App\Models\Holiday;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -30,7 +32,25 @@ class HolidayResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('schedule_id')
+                    ->label('Employee')
+                    ->options(Employee::pluck('name', 'id')->toArray()),
+                DatePicker::make('start_date')
+                    ->label('Start date')
+                    ->native(false)
+                    ->format('d-m-Y')
+                    ->displayFormat('d-m-Y')
+                    ->weekStartsOnMonday()
+                    ->closeOnDateSelection()
+                    ->minDate(now()),
+                DatePicker::make('end_date')
+                    ->label('End date')
+                    ->native(false)
+                    ->format('d-m-Y')
+                    ->displayFormat('d-m-Y')
+                    ->weekStartsOnMonday()
+                    ->closeOnDateSelection()
+                    ->minDate(now()->addDay())
             ]);
     }
 
