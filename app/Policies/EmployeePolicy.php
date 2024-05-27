@@ -13,7 +13,7 @@ class EmployeePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
