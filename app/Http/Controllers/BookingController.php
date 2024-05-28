@@ -18,8 +18,6 @@ class BookingController extends Controller
 {
     public function index()
     {
-        /*$employee = Employee::find(1);
-        dd($employee->schedule->slots()->where('start_time', '10:00')->get());*/
         OrderSteps::getInstance()->renew();
 
         return view('pages.index', ['user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => false]);

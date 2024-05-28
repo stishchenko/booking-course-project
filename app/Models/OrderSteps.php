@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Validation\Rule;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Session;
 
@@ -175,5 +176,13 @@ class OrderSteps
     public function renew()
     {
         Session::forget('order_steps');
+    }
+
+    public static function getStepValidationRules()
+    {
+        return [
+            'entity' => ['required', 'string', Rule::in(['service', 'employee', 'time-slot'])],
+            'data' => 'required',
+        ];
     }
 }

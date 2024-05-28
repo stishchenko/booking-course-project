@@ -7,26 +7,21 @@ use App\Models\OrderSteps;
 use App\Models\Slot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class ReservationController extends Controller
 {
     public function saveProgress(Request $request)
     {
-        $data = $request->validate([
-            'entity' => ['required', 'string', Rule::in(['service', 'employee', 'time-slot'])],
-            'data' => 'required',
-        ]);
-
+        $validator = Validator::make($request->all(), OrderSteps::getStepValidationRules());
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->messages()], 406);
+        }
+        $data = $validator->validated();
         $stepHandler = OrderSteps::getInstance();
         $stepHandler->setStep($data['entity'], $data['data']);
         $nextStep = $stepHandler->getNextStep();
-
-        /*if ($nextStep === OrderSteps::CONFIRMATION) {
-            //dd($stepHandler->getService()->id, $stepHandler->getEmployee()->id, $stepHandler->getDate(), $stepHandler->getTime(), $stepHandler->getPrice());
-            $this->createOrder($stepHandler);
-            $stepHandler->renew();
-        }*/
 
         return redirect()->route($this->getRouteForStep($nextStep));
     }
@@ -47,12 +42,6 @@ class ReservationController extends Controller
 
     private function createOrder(OrderSteps $stepHandler, array $clientData): void
     {
-        /*$slot = Slot::create([
-            'date' => $stepHandler->getDate(),
-            'start_time' => $stepHandler->getTime(),
-            'duration' => $stepHandler->getService()->duration,
-            'schedule_id' => $stepHandler->getEmployee()->schedule->id,
-        ]);*/
         $orderData = [
             'company_id' => $stepHandler->getCompany()->id,
             'service_id' => $stepHandler->getService()->id,
@@ -70,6 +59,5 @@ class ReservationController extends Controller
             'duration' => $stepHandler->getService()->duration,
             'schedule_id' => $stepHandler->getEmployee()->schedule->id,
         ]);
-        //dd($order, $order->slot);
     }
 }
