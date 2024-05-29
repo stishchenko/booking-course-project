@@ -2,47 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Dtos\OrderDto;
-use App\Dtos\SlotsDto;
-use App\Models\Employee;
+use App\Models\Company;
 use App\Models\Order;
 use App\Models\OrderSteps;
-use App\Models\Service;
+use App\Services\OrderPartsService;
 use App\Services\OrderService;
-use App\Services\TimeSlotsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class BookingController extends Controller
 {
+    public function __construct(protected OrderPartsService $orderPartsService)
+    {
+    }
+
     public function index()
     {
         OrderSteps::getInstance()->renew();
 
-        return view('pages.index', ['user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => false]);
+        return view('pages.index', ['companies' => $this->orderPartsService->getCompanies(),
+            'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => false]);
     }
 
     public function services()
     {
-        $hasEmployee = OrderSteps::getInstance()->getEmployee();
-        return view('pages.services', ['services' => $hasEmployee != null ? $hasEmployee->services()->get() :
-            Service::all(), 'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
+        return view('pages.services', ['services' => $this->orderPartsService->getServices(),
+            'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
     }
 
     public function employees()
     {
-        $hasService = OrderSteps::getInstance()->getService();
-        return view('pages.employees', ['employees' => $hasService != null ? $hasService->employees()->get() :
-            Employee::all(), 'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
+        return view('pages.employees', ['employees' => $this->orderPartsService->getEmployees(),
+            'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
     }
 
     public function schedule()
     {
-        $timeSlotsService = new TimeSlotsService(OrderSteps::getInstance()->getEmployee());
-        $timeSlots1 = $timeSlotsService->calculateTimeSlots(OrderSteps::getInstance()->getService()->duration);
-        return view('pages.schedules', ['slots' => $timeSlots1, 'user' => Auth::check() ? Auth::user() :
-            null, 'useProgressBar' => true]);
+        return view('pages.schedules', ['slots' => $this->orderPartsService->getSchedule(),
+            'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
     }
 
     public function confirmation()
@@ -50,6 +48,7 @@ class BookingController extends Controller
         $orderSteps = OrderSteps::getInstance();
         return view('pages.confirmation',
             [
+                'company' => $orderSteps->getCompany(),
                 'service' => $orderSteps->getService(),
                 'employee' => $orderSteps->getEmployee(),
                 'date' => $orderSteps->getDate() . ' ' . $orderSteps->getTime(),
@@ -72,7 +71,7 @@ class BookingController extends Controller
             abort(403, 'You are not allowed to view orders');
         }
         $groupType = $request->input('order', 'none');
-        $orders = OrderService::transformData(Order::with('service', 'employee', 'slot')->get(), $groupType);
+        $orders = OrderService::transformData(Order::with('company', 'service', 'employee', 'slot')->get(), $groupType);
         return view('pages.orders', ['ordersArray' => $orders, 'orderType' => $groupType, 'user' => Auth::user(), 'useProgressBar' => false]);
     }
 }

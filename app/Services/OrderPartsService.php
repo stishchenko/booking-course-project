@@ -9,6 +9,12 @@ use App\Models\Service;
 
 class OrderPartsService
 {
+
+    public function getCompanies()
+    {
+        return Company::all();
+    }
+
     public function getServices()
     {
         $orderInstance = OrderSteps::getInstance();

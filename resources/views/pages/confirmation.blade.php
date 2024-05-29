@@ -14,6 +14,10 @@
                 <input type="text" class="col" name="phone">
             </div>
             <div class="row mb-3">
+                <label for="company" class="col">Company:</label>
+                <input type="text" class="col" name="company" value="{{ $company->name }}" readonly>
+            </div>
+            <div class="row mb-3">
                 <label for="service" class="col">Service:</label>
                 <input type="text" class="col" name="service" value="{{ $service->name }}" readonly>
             </div>

@@ -16,6 +16,7 @@ class OrderService
         foreach ($orders as $order) {
             $orderDto = new OrderDto();
             $orderDto->id = $order->id;
+            $orderDto->company = $order->company->name;
             $orderDto->service = $order->service->name;
             $orderDto->employee = $order->employee->name;
             $orderDto->price = $order->service->price;

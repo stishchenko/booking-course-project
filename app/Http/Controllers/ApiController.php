@@ -2,20 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EmployeeRequest;
-use App\Http\Requests\ScheduleRequest;
-use App\Http\Requests\ServiceRequest;
-use App\Models\Company;
-use App\Models\Employee;
 use App\Models\Order;
 use App\Models\OrderSteps;
-use App\Models\Service;
 use App\Services\OrderPartsService;
-use App\Services\TimeSlotsService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class ApiController extends Controller
 {
@@ -26,7 +17,7 @@ class ApiController extends Controller
     public function index()
     {
         OrderSteps::getInstance()->renew();
-        return 'Welcome to Api';
+        return ['companies' => $this->orderPartsService->getCompanies()];
     }
 
     public function services()
@@ -52,6 +43,7 @@ class ApiController extends Controller
 
     public function finishedOrder()
     {
+        //OrderSteps::getInstance()->renew();
         return 'Thank you for your order!';
     }
 

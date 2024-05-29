@@ -1,17 +1,17 @@
 @extends('mainApp')
 
 @section('headerTitle', 'Booking service')
-@section('headerDescription', 'Please choose a service to book.')
+@section('headerDescription', 'Please choose a company to book.')
 
-{{--
-@php($chosenEntities = \App\Models\OrderSteps::getInstance())
-@section('breadcrumds')
-
-    @include(
-            'components.breadcrumbs',
+@section('content')
+    @foreach($companies as $company)
+        @include(
+            'components.companyCard',
             [
-                'worker'  => $chosenEntities ? $chosenEntities->getWorker() : null,
-                'service' => $chosenEntities ? $chosenEntities->getService() : null,
+                'name'     => $company->name,
+                'address'    => $company->address,
+                'id'       => $company->id,
             ]
-    )
-@endsection--}}
+        )
+    @endforeach
+@endsection

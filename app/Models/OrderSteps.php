@@ -29,7 +29,7 @@ class OrderSteps
 
     public function __construct()
     {
-        $this->setCompany(1);
+        //$this->setCompany(1);
     }
 
     public function getService(): ?Service
@@ -82,6 +82,10 @@ class OrderSteps
             return self::STAFF;
         }
         if ($isCompanySet && $isEmployeeSet) {
+            return self::SERVICES;
+        }
+
+        if ($isCompanySet) {
             return self::SERVICES;
         }
 
@@ -181,7 +185,7 @@ class OrderSteps
     public static function getStepValidationRules()
     {
         return [
-            'entity' => ['required', 'string', Rule::in(['service', 'employee', 'time-slot'])],
+            'entity' => ['required', 'string', Rule::in(['company', 'service', 'employee', 'time-slot'])],
             'data' => 'required',
         ];
     }
