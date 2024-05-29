@@ -13,6 +13,7 @@ class Holiday extends Model
     protected $fillable = [
         'start_date',
         'end_date',
+        'schedule_id'
     ];
 
     public function schedule(): BelongsTo
