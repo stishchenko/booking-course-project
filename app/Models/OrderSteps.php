@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Validation\Rule;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Session;
 
@@ -28,7 +29,7 @@ class OrderSteps
 
     public function __construct()
     {
-        $this->setCompany(1);
+        //$this->setCompany(1);
     }
 
     public function getService(): ?Service
@@ -81,6 +82,10 @@ class OrderSteps
             return self::STAFF;
         }
         if ($isCompanySet && $isEmployeeSet) {
+            return self::SERVICES;
+        }
+
+        if ($isCompanySet) {
             return self::SERVICES;
         }
 
@@ -175,5 +180,13 @@ class OrderSteps
     public function renew()
     {
         Session::forget('order_steps');
+    }
+
+    public static function getStepValidationRules()
+    {
+        return [
+            'entity' => ['required', 'string', Rule::in(['company', 'service', 'employee', 'time-slot'])],
+            'data' => 'required',
+        ];
     }
 }

@@ -4,14 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderSteps;
-use App\Models\Slot;
+use App\Services\OrderPartsService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
-class ReservationController extends Controller
+class ApiController extends Controller
 {
+    public function __construct(protected OrderPartsService $orderPartsService)
+    {
+    }
+
+    public function index()
+    {
+        OrderSteps::getInstance()->renew();
+        return ['companies' => $this->orderPartsService->getCompanies()];
+    }
+
+    public function services()
+    {
+        return response()->json(['services' => $this->orderPartsService->getServices()]);
+    }
+
+    public function employees()
+    {
+        return response()->json(['employees' => $this->orderPartsService->getEmployees()]);
+    }
+
+    public function schedule()
+    {
+        return response()->json(['schedule' => $this->orderPartsService->getSchedule()]);
+    }
+
+    public function confirmation()
+    {
+        $orderSteps = OrderSteps::getInstance();
+        return response()->json(['order' => $orderSteps]);
+    }
+
+    public function finishedOrder()
+    {
+        //OrderSteps::getInstance()->renew();
+        return 'Thank you for your order!';
+    }
+
+    //Save data about order
     public function saveProgress(Request $request)
     {
         $validator = Validator::make($request->all(), OrderSteps::getStepValidationRules());
@@ -23,13 +59,13 @@ class ReservationController extends Controller
         $stepHandler->setStep($data['entity'], $data['data']);
         $nextStep = $stepHandler->getNextStep();
 
-        return redirect()->route($this->getRouteForStep($nextStep));
+        return response()->json(['next-step' => $this->getRouteForStep($nextStep)]);
     }
 
     public function saveOrder(Request $request)
     {
         $stepHandler = OrderSteps::getInstance();
-        $this->createOrder($stepHandler, ['client_name' => $request->name, 'client_phone' => $request->phone]);
+        $this->createOrder($stepHandler, ['client_name' => $request->client_name, 'client_phone' => $request->client_phone]);
         $stepHandler->renew();
 
         return redirect()->route('pages.finished-order');
@@ -46,7 +82,6 @@ class ReservationController extends Controller
             'company_id' => $stepHandler->getCompany()->id,
             'service_id' => $stepHandler->getService()->id,
             'employee_id' => $stepHandler->getEmployee()->id,
-            'user_id' => Auth::check() ? Auth::id() : null,
             'client_name' => $clientData['client_name'],
             'client_phone' => $clientData['client_phone'],
             'price' => $stepHandler->getPrice(),
