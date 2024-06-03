@@ -68,7 +68,7 @@ class ApiController extends Controller
         $this->createOrder($stepHandler, ['client_name' => $request->client_name, 'client_phone' => $request->client_phone]);
         $stepHandler->renew();
 
-        return redirect()->route('pages.finished-order');
+        return redirect()->route('pages.api.finished-order');
     }
 
     private function getRouteForStep(?string $nextStep): string

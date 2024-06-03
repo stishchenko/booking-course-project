@@ -19,12 +19,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/', [ApiController::class, 'index']);
+
 Route::name('pages.')->group(function () {
     Route::get('/services', [ApiController::class, 'services'])->name('services');
     Route::get('/employees', [ApiController::class, 'employees'])->name('employees');
     Route::get('/schedule', [ApiController::class, 'schedule'])->name('schedules');
     Route::get('/confirmation', [ApiController::class, 'confirmation'])->name('confirmation');
-    Route::get('/finished-order', [ApiController::class, 'finishedOrder'])->name('finished-order');
+    Route::get('/finished-order', [ApiController::class, 'finishedOrder'])->name('api.finished-order');
 });
 
 Route::post('/save-step', [ApiController::class, 'saveProgress'])->name('save-step');

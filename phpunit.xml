@@ -9,8 +9,11 @@
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
         <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
+            <directory>tests/Feature</directory>
         </testsuite>
+        <!--<testsuite name="Project">
+            <directory suffix="Test.php">./tests/Project</directory>
+        </testsuite>-->
     </testsuites>
     <coverage>
         <include>
@@ -21,8 +24,10 @@
         <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
-        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
+        <!--<env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_DATABASE" value="booking"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value="12345678"/>-->
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
