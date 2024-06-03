@@ -30,7 +30,6 @@ class ReservationController extends Controller
     {
         $stepHandler = OrderSteps::getInstance();
         $this->createOrder($stepHandler, ['client_name' => $request->name, 'client_phone' => $request->phone]);
-        $stepHandler->renew();
 
         return redirect()->route('pages.finished-order');
     }

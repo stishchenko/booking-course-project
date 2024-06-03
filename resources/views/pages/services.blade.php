@@ -2,15 +2,19 @@
 
 @section('content')
     @foreach($services as $service)
-        @include(
-            'components.serviceCard',
-            [
-                'name'     => $service->name,
-                'price'    => $service->price,
-                'duration' => $service->duration,
-                'description' => $service->description,
-                'id'       => $service->id,
-            ]
-        )
+        @foreach($service->companies as $company)
+            @include(
+                'components.serviceCard',
+                [
+                    'id'       => $service->id,
+                    'name'     => $service->name,
+                    'price'    => $service->price,
+                    'duration' => $service->duration,
+                    'description' => $service->description,
+                    'company_name' => $company->name,
+                    'company_id'       => $company->id,
+                ]
+            )
+        @endforeach
     @endforeach
 @endsection

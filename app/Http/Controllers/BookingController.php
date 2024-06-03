@@ -20,27 +20,38 @@ class BookingController extends Controller
     public function index()
     {
         OrderSteps::getInstance()->renew();
-
         return view('pages.index', ['companies' => $this->orderPartsService->getCompanies(),
             'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => false]);
     }
 
     public function services()
     {
-        return view('pages.services', ['services' => $this->orderPartsService->getServices(),
-            'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
+        return view('pages.services',
+            [
+                'services' => $this->orderPartsService->getServices(),
+                'user' => Auth::check() ? Auth::user() : null,
+                'useProgressBar' => true,
+            ]);
     }
 
     public function employees()
     {
-        return view('pages.employees', ['employees' => $this->orderPartsService->getEmployees(),
-            'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
+        return view('pages.employees',
+            [
+                'employees' => $this->orderPartsService->getEmployees(),
+                'user' => Auth::check() ? Auth::user() : null,
+                'useProgressBar' => true,
+            ]);
     }
 
     public function schedule()
     {
-        return view('pages.schedules', ['slots' => $this->orderPartsService->getSchedule(),
-            'user' => Auth::check() ? Auth::user() : null, 'useProgressBar' => true]);
+        return view('pages.schedules',
+            [
+                'slots' => $this->orderPartsService->getSchedule(),
+                'user' => Auth::check() ? Auth::user() : null,
+                'useProgressBar' => true,
+            ]);
     }
 
     public function confirmation()
@@ -60,9 +71,13 @@ class BookingController extends Controller
 
     public function finishedOrder()
     {
-        //OrderSteps::getInstance()->renew();
-        return view('pages.finishedOrder', ['user' => Auth::check() ? Auth::user() : null,
-            'useProgressBar' => true, 'confirm' => true]);
+        return view('pages.finishedOrder',
+            [
+                'user' => Auth::check() ? Auth::user() : null,
+                'useProgressBar' => true,
+                'confirm' => true,
+                'clear' => true,
+            ]);
     }
 
     public function orders(Request $request)

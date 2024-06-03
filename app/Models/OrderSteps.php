@@ -26,10 +26,10 @@ class OrderSteps
     protected ?string $date = null;
     protected ?string $startTime = null;
     protected ?string $endTime = null;
+    protected string $firstEntity = 'service';
 
     public function __construct()
     {
-        //$this->setCompany(1);
     }
 
     public function getService(): ?Service
@@ -96,10 +96,16 @@ class OrderSteps
     {
         switch ($entity) {
             case 'service':
-                $this->setService($data);
+                $this->setService($data['entity_id']);
+                if ($this->company === null) {
+                    $this->setCompany($data['company_id']);
+                }
                 break;
             case 'employee':
                 $this->setEmployee($data);
+                if ($this->company === null) {
+                    $this->setCompany($this->employee->company->id);
+                }
                 break;
             case 'company':
                 $this->setCompany($data);
@@ -175,6 +181,16 @@ class OrderSteps
         $basePrice = $this->getService()->price;
         //some additional logic could be added like promo, coupons, etc
         return $basePrice;
+    }
+
+    public function getFirstEntity()
+    {
+        return $this->firstEntity;
+    }
+
+    public function setFirstEntity(string $entity)
+    {
+        $this->firstEntity = $entity;
     }
 
     public function renew()

@@ -54,7 +54,7 @@
         </div>
         @foreach($ordersArray as $key => $orders)
             @if($orderType !== 'none')
-                <h3 class="row text-primary">For {{ $orderType }} {{ $key }}:</h3>
+                <h4 class="row text-primary">For {{ $orderType }} {{ $key }}:</h4>
             @endif
             @foreach($orders as $order)
                 @include(

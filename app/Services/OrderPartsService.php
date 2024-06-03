@@ -19,16 +19,23 @@ class OrderPartsService
     {
         $orderInstance = OrderSteps::getInstance();
         $employee = $orderInstance->getEmployee();
-        return $employee != null ? $employee->services : $orderInstance->getCompany()->services;
+        if ($employee !== null) {
+            return $employee->services;
+        }
+        return $orderInstance->getCompany() !== null ? $orderInstance->getCompany()->services : Service::all();
     }
 
     public function getEmployees()
     {
         $orderInstance = OrderSteps::getInstance();
         $service = $orderInstance->getService();
-        return $service != null
-            ? $service->employees()->where('company_id', $orderInstance->getCompany()->id)->get()
-            : $orderInstance->getCompany()->employees;
+        if ($service !== null) {
+            return $service->employees()->where('company_id', $orderInstance->getCompany()->id)->get();
+        }
+        $orderInstance->setFirstEntity('employee');
+        return $orderInstance->getCompany() !== null
+            ? $orderInstance->getCompany()->employees
+            : Employee::all();
     }
 
     public function getSchedule()

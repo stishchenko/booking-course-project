@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <p class="card-text">{{ $position }}</p>
-
+            <p class="card-text">From {{ $company_name }}</p>
             <a href="{{ route('save-step', ['entity' => 'employee', 'data' => $id]) }}"
                class="w-100 btn btn-lg btn-primary">Select</a>
 

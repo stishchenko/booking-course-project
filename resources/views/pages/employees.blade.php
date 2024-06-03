@@ -5,9 +5,10 @@
         @include(
             'components.employeeCard',
             [
+                'id'       => $employee->id,
                 'name'     => $employee->name,
                 'position' => $employee->position,
-                'id'       => $employee->id,
+                'company_name' => $employee->company->name,
             ]
         )
     @endforeach

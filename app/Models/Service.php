@@ -22,7 +22,7 @@ class Service extends Model
 
     public function companies(): BelongsToMany
     {
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsToMany(Company::class, 'company_service');
     }
 
     public function employees(): BelongsToMany
