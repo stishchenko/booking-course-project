@@ -23,6 +23,8 @@ class Order extends Model
         'client_phone'
     ];
 
+    protected $with = ['company', 'employee', 'service', 'slot', 'user'];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);

@@ -23,7 +23,7 @@ Route::name('pages.')->group(function () {
     Route::get('/employees', [BookingController::class, 'employees'])->name('employees');
     Route::get('/schedule', [BookingController::class, 'schedule'])->name('schedules');
     Route::get('/confirmation', [BookingController::class, 'confirmation'])->name('confirmation');
-    Route::get('/finished-order', [BookingController::class, 'finishedOrder'])->name('finished-order');
+    Route::get('/finished-order-{id}', [BookingController::class, 'finishedOrder'])->name('finished-order');
     Route::get('/orders', [BookingController::class, 'orders'])->name('orders');
 });
 

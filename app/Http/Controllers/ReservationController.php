@@ -29,9 +29,9 @@ class ReservationController extends Controller
     public function saveOrder(Request $request)
     {
         $stepHandler = OrderSteps::getInstance();
-        $this->createOrder($stepHandler, ['client_name' => $request->name, 'client_phone' => $request->phone]);
+        $orderId = $this->createOrder($stepHandler, ['client_name' => $request->name, 'client_phone' => $request->phone]);
 
-        return redirect()->route('pages.finished-order');
+        return redirect()->route('pages.finished-order', ['id' => $orderId]);
     }
 
     private function getRouteForStep(?string $nextStep): string
@@ -39,7 +39,7 @@ class ReservationController extends Controller
         return OrderSteps::stepToRoutesMapping[$nextStep] ?? 'pages.services';
     }
 
-    private function createOrder(OrderSteps $stepHandler, array $clientData): void
+    private function createOrder(OrderSteps $stepHandler, array $clientData): int
     {
         $orderData = [
             'company_id' => $stepHandler->getCompany()->id,
@@ -58,5 +58,7 @@ class ReservationController extends Controller
             'duration' => $stepHandler->getService()->duration,
             'schedule_id' => $stepHandler->getEmployee()->schedule->id,
         ]);
+
+        return $order->id;
     }
 }

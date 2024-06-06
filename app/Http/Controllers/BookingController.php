@@ -69,10 +69,11 @@ class BookingController extends Controller
             ]);
     }
 
-    public function finishedOrder()
+    public function finishedOrder(int $id)
     {
         return view('pages.finishedOrder',
             [
+                'order' => Order::find($id),
                 'user' => Auth::check() ? Auth::user() : null,
                 'useProgressBar' => true,
                 'confirm' => true,
