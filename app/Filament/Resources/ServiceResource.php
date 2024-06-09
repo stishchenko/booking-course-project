@@ -7,10 +7,12 @@ use App\Filament\Resources\ServiceResource\RelationManagers;
 use App\Models\Service;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -29,6 +31,7 @@ class ServiceResource extends Resource
                 TextInput::make('description'),
                 TextInput::make('duration')->required()->integer()->minValue(30),
                 TextInput::make('price')->required()->numeric()->inputMode('decimal')->minValue(0),
+                Toggle::make('is_active'),
             ]);
     }
 
@@ -56,10 +59,15 @@ class ServiceResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
+                ToggleColumn::make('is_active')
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('name')
                     ->options(Service::pluck('name', 'id')->toArray())->attribute('id'),
+                Tables\Filters\Filter::make('is_active')
+                    ->toggle()
+                    ->query(fn($query) => $query->where('is_active', 1)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->iconButton(),

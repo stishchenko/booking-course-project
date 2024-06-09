@@ -56,5 +56,8 @@ class User extends Authenticatable implements FilamentUser
         return $this->role === 'assistant';
     }
 
-
+    public function isUser()
+    {
+        return $this->role === 'user';
+    }
 }

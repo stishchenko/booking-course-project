@@ -18,6 +18,7 @@ class Service extends Model
         'description',
         'duration',
         'price',
+        'is_active',
     ];
 
     public function companies(): BelongsToMany

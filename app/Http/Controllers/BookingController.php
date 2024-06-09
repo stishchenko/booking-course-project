@@ -83,11 +83,15 @@ class BookingController extends Controller
 
     public function orders(Request $request)
     {
-        if (Gate::denies('view-orders')) {
+        if (!Auth::check()) {
             abort(403, 'You are not allowed to view orders');
         }
         $groupType = $request->input('order', 'none');
-        $orders = OrderService::transformData(Order::with('company', 'service', 'employee', 'slot')->get(), $groupType);
-        return view('pages.orders', ['ordersArray' => $orders, 'orderType' => $groupType, 'user' => Auth::user(), 'useProgressBar' => false]);
+        $user = Auth::user();
+        $orders = OrderService::transformData(
+            $user->isUser() ? Order::where('user_id', $user->id)->get() : Order::all(),
+            $groupType
+        );
+        return view('pages.orders', ['ordersArray' => $orders, 'orderType' => $groupType, 'user' => $user, 'useProgressBar' => false]);
     }
 }
