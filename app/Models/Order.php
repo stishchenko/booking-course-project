@@ -12,6 +12,19 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'company_id',
+        'employee_id',
+        'service_id',
+        'user_id',
+        'price',
+        'client_name',
+        'client_phone'
+    ];
+
+    protected $with = ['company', 'employee', 'service', 'slot', 'user'];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
@@ -27,8 +40,13 @@ class Order extends Model
         return $this->hasOne(Slot::class);
     }
 
-    public function services(): BelongsToMany
+    public function service(): BelongsTo
     {
-        return $this->belongsToMany(Service::class, 'order_service');
+        return $this->belongsTo(Service::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

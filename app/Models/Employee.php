@@ -13,6 +13,13 @@ class Employee extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'position',
+        'company_id',
+        'is_active',
+    ];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
@@ -20,7 +27,7 @@ class Employee extends Model
 
     public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Service::class, 'employee_service');
     }
 
     public function schedule(): HasOne

@@ -3,7 +3,15 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Employee;
+use App\Models\Order;
+use App\Models\Service;
+use App\Models\User;
+use App\Policies\EmployeePolicy;
+use App\Policies\OrderPolicy;
+use App\Policies\ServicePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -14,6 +22,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Order::class => OrderPolicy::class,
+        Employee::class => EmployeePolicy::class,
+        Service::class => ServicePolicy::class,
     ];
 
     /**
@@ -23,6 +34,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('view-orders', function (User $user) {
+            return $user->isAdmin() || $user->isManager();
+        });
     }
 }

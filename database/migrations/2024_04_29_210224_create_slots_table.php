@@ -13,13 +13,14 @@ return new class extends Migration {
         Schema::create('slots', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('schedule_id');
-            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('order_id')->nullable();
             $table->date('date');
             $table->time('start_time');
+            $table->time('end_time');
             $table->string('duration');
             $table->timestamps();
 
-            $table->foreign('schedule_id')->references('id')->on('schedules');
+            $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
